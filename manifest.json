@@ -35,3 +35,26 @@
     }
   ]
 }
+"screenshots": [
+  {
+    "src": "screenshots/shot1.png",
+    "sizes": "1280x720",
+    "type": "image/png",
+    "form_factor": "wide",
+    "label": "شاشة العملاء"
+  },
+  {
+    "src": "screenshots/shot2.png",
+    "sizes": "1280x720",
+    "type": "image/png",
+    "form_factor": "wide",
+    "label": "إضافة فاتورة"
+  },
+  {
+    "src": "screenshots/shot3.png",
+    "sizes": "720x1280",
+    "type": "image/png",
+    "form_factor": "narrow",
+    "label": "تفاصيل العميل (هاتف)"
+  }
+]
