@@ -485,33 +485,55 @@ function editCurrentInvoice() { if(!currentInvoiceForExport) return; hidePrintMo
 function deleteCurrentInvoice() { if(!isAdmin()){showToast('غير مصرح','error'); return;} if(!currentInvoiceForExport||!confirm('حذف الفاتورة؟')) return; const c=clients.find(c=>c.id===currentClientId); if(c) c.invoices=c.invoices.filter(i=>i.id!==currentInvoiceForExport.invoice.id); saveData(); hidePrintModal(); selectClient(currentClientId); showToast('تم الحذف'); }
 async function exportCurrentInvoiceAsImage() { 
   if(!currentInvoiceForExport) return; 
+  const toastId = showToast('جاري إنشاء الصورة... يرجى الانتظار', 'info');
   try { 
-    showToast('جاري إنشاء الصورة...','info'); 
-    const {client,invoice}=currentInvoiceForExport; 
-    const div=document.createElement('div'); 
-    div.style.cssText='position:fixed;top:-9999px;background:white;padding:20px;width:600px;direction:rtl;font-family:Cairo,sans-serif;'; 
-    div.innerHTML=buildInvoiceHTML(client,invoice); 
+    const {client, invoice} = currentInvoiceForExport; 
+    
+    // إنشاء عنصر مؤقت لاحتواء محتوى الفاتورة
+    const div = document.createElement('div'); 
+    // نضعه في مكان مرئي ولكن مخفي عن المستخدم (شفاف) لضمان تحميل جميع الموارد
+    div.style.cssText = 'position:fixed; top:0; left:0; background:white; padding:20px; width:600px; direction:rtl; font-family:Cairo, sans-serif; opacity:0; pointer-events:none; z-index:-1;'; 
+    div.innerHTML = buildInvoiceHTML(client, invoice); 
     document.body.appendChild(div); 
-    await new Promise(r=>setTimeout(r,100)); // انتظار التحميل
-    const canvas=await html2canvas(div,{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false}); 
+    
+    // ننتظر قليلاً لضمان اكتمال تحميل الخطوط والصور
+    await new Promise(r => setTimeout(r, 200)); 
+    
+    const canvas = await html2canvas(div, {
+      scale: 2,               // جودة عالية
+      backgroundColor: '#ffffff',
+      useCORS: true,          // للتعامل مع أي صور خارجية
+      logging: false,
+      allowTaint: false
+    }); 
+    
+    // إزالة العنصر المؤقت
     document.body.removeChild(div); 
-    const link=document.createElement('a'); 
-    link.download=`فاتورة_${client.name}_${invoice.date}.png`; 
-    link.href=canvas.toDataURL('image/png'); 
+    
+    // تحميل الصورة
+    const link = document.createElement('a'); 
+    link.download = `فاتورة_${client.name}_${invoice.date}.png`; 
+    link.href = canvas.toDataURL('image/png'); 
     link.click(); 
-    showToast('تم حفظ الصورة'); 
-  } catch(e){ 
+    showToast('تم حفظ الصورة بنجاح', 'success'); 
+  } catch(e) { 
     console.error(e); 
-    showToast('حدث خطأ أثناء التصدير','error'); 
+    showToast('حدث خطأ أثناء التصدير، تأكد من اتصال الإنترنت وحاول مرة أخرى', 'error'); 
   } 
 }
 // ==================== تصدير جميع فواتير العميل كصورة واحدة مجمعة ====================
 async function exportAllClientInvoicesToImages() {
-  const c = clients.find(c => c.id === currentClientId);
-  if (!c || !c.invoices.length) { showToast('لا توجد فواتير لهذا العميل', 'warning'); return; }
+  const c = clients.find(client => client.id === currentClientId);
+  if (!c || !c.invoices.length) {
+    showToast('لا توجد فواتير لهذا العميل', 'warning');
+    return;
+  }
   showToast('جاري إنشاء الصورة المجمعة... قد تستغرق لحظات', 'info');
+  
   const container = document.createElement('div');
-  container.style.cssText = 'position:fixed;top:-9999px;background:white;padding:20px;direction:rtl;font-family:Cairo,sans-serif;width:600px;';
+  // نفس الفكرة: نضعه في مكان مرئي ولكن مخفي
+  container.style.cssText = 'position:fixed; top:0; left:0; background:white; padding:20px; width:600px; direction:rtl; font-family:Cairo, sans-serif; opacity:0; pointer-events:none; z-index:-1;';
+  
   // إضافة كل فاتورة بشكل منفصل مع فاصل
   c.invoices.forEach((inv, idx) => {
     const invDiv = document.createElement('div');
@@ -526,18 +548,26 @@ async function exportAllClientInvoicesToImages() {
       container.appendChild(hr);
     }
   });
+  
   document.body.appendChild(container);
-  await new Promise(r => setTimeout(r, 200));
+  await new Promise(r => setTimeout(r, 300)); // وقت أطول للمحتوى الكبير
+  
   try {
-    const canvas = await html2canvas(container, { scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false });
+    const canvas = await html2canvas(container, {
+      scale: 2,
+      backgroundColor: '#ffffff',
+      useCORS: true,
+      logging: false,
+      allowTaint: false
+    });
     const link = document.createElement('a');
     link.download = `فواتير_${c.name}_مجمع.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
-    showToast('تم حفظ الصورة المجمعة');
+    showToast('تم حفظ الصورة المجمعة', 'success');
   } catch (err) {
     console.error(err);
-    showToast('خطأ في التصدير', 'error');
+    showToast('حدث خطأ في التصدير المجمع، حاول مرة أخرى', 'error');
   } finally {
     document.body.removeChild(container);
   }
