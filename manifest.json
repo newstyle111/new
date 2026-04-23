@@ -1,65 +1,27 @@
 {
   "name": "New Style Pro",
   "short_name": "NewStyle",
-  "description": "نظام متكامل لإدارة الحسابات والمخزون والمصروفات لمعامل طباعة الصور",
-  "start_url": "/",
+  "description": "نظام متكامل للحسابات والمخزون والمصروفات لمعمل طباعة الصور",
+  "start_url": ".",
+  "scope": ".",
   "display": "standalone",
   "theme_color": "#111111",
   "background_color": "#111111",
-  "orientation": "portrait",
-  "dir": "rtl",
+  "orientation": "portrait-primary",
   "lang": "ar",
+  "dir": "rtl",
   "icons": [
     {
-      "src": "/icons/icon-72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-96.png",
-      "sizes": "96x96",
-      "type": "image/png"
-    },
-    {
-      "src": "/icons/icon-128.png",
-      "sizes": "128x128",
-      "type": "image/png"
-    },
-    {
-      "src": "/icons/icon-144.png",
-      "sizes": "144x144",
-      "type": "image/png"
-    },
-    {
-      "src": "/icons/icon-152.png",
-      "sizes": "152x152",
-      "type": "image/png"
-    },
-    {
-      "src": "/icons/icon-192.png",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icons/icon-384.png",
-      "sizes": "384x384",
-      "type": "image/png"
-    },
-    {
-      "src": "/icons/icon-512.png",
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/screenshots/screenshot1.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "form_factor": "wide"
     }
   ],
   "shortcuts": [
@@ -67,24 +29,15 @@
       "name": "العملاء",
       "short_name": "عملاء",
       "description": "عرض قائمة العملاء",
-      "url": "/?view=clients",
-      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+      "url": ".",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "فاتورة جديدة",
       "short_name": "فاتورة",
       "description": "إضافة فاتورة جديدة",
-      "url": "/?view=invoice",
-      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
-    },
-    {
-      "name": "المخزون",
-      "short_name": "مخزون",
-      "description": "إدارة المخزون",
-      "url": "/?view=inventory",
-      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+      "url": ".",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     }
-  ],
-  "categories": ["business", "finance", "productivity"],
-  "prefer_related_applications": false
+  ]
 }
