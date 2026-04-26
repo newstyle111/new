@@ -473,8 +473,8 @@ async function exportAllClientInvoicesToImages() {
   }
   showToast('جاري إنشاء الصورة المجمعة... قد تستغرق لحظات', 'info');
   const container = document.createElement('div');
-    container.style.cssText = 'display:none; background:white; padding:20px; width:600px; direction:rtl; font-family:Cairo, sans-serif;'  c.invoices.forEach((inv, idx) => {
-    const invDiv = document.createElement('div');
+  container.style.cssText = 'display:none; background:white; padding:20px; width:600px; direction:rtl; font-family:Cairo, sans-serif;';
+  c.invoices.forEach((inv, idx) => {    const invDiv = document.createElement('div');
     invDiv.style.marginBottom = '40px';
     invDiv.style.pageBreakAfter = idx !== c.invoices.length - 1 ? 'always' : 'auto';
     invDiv.innerHTML = buildInvoiceHTML(c, inv);
