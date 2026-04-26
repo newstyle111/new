@@ -448,7 +448,7 @@ async function exportCurrentInvoiceAsImage() {
   try {
     const { client, invoice } = currentInvoiceForExport;
     const div = document.createElement('div');
-    div.style.cssText = 'display:none; background:white; padding:20px; width:600px; direction:rtl; font-family:Cairo, sans-serif;';
+    div.style.cssText = 'display:none; background:white; padding:40px; width:600px; direction:rtl; font-family:Cairo, sans-serif;';
     div.innerHTML = buildInvoiceHTML(client, invoice);
     document.body.appendChild(div);
     await new Promise(r => setTimeout(r, 300));
